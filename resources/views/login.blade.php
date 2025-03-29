@@ -3,6 +3,7 @@
 @section('title', 'Login')
 
 @section('content')
+
 <div class="login-box">
     <div class="login-logo">
       <a href="/">
@@ -14,10 +15,10 @@
       <div class="card-body login-card-body">
         <p class="login-box-msg">Sign in to start your session</p>
   
-        <form action="" method="post">
+        <form action="{{ route('login.submit') }}" method="post">
           @csrf
           <div class="input-group mb-3">
-            <input type="email" class="form-control" placeholder="Email">
+            <input type="text" class="form-control" name="username" placeholder="Username">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-envelope"></span>
@@ -25,7 +26,7 @@
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" placeholder="Password">
+            <input type="password" class="form-control" name="password" placeholder="Password">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-lock"></span>
@@ -64,5 +65,7 @@
 @endsection
 
 @section('js')
-
+@if(Session::has('alertmsg'))  ,
+  <script> toastr.error("{{ Session::get('alertmsg') }}");</script>
+@endif 
 @endsection
