@@ -18,12 +18,23 @@
 
     @yield('css')
   </head>
-  <body class="hold-transition login-page">
-  @include('layouts.header') <!-- Header Section -->
+  <body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
 
-  @yield('content') <!-- Main Content -->
+      <!-- Preloader -->
+      <div class="preloader flex-column justify-content-center align-items-center">
+        <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+      </div>
+  
+      @include('layouts.header') <!-- Header Section -->
 
-  @include('layouts.footer')
+      @include('layouts.sidebar')
+
+      @yield('content') <!-- Main Content -->
+
+      @include('layouts.footer')
+
+    </div>
 
   <!-- jQuery -->
   <script src="../../plugins/jquery/jquery.min.js"></script>
