@@ -19,9 +19,15 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('admin.settings.index') }}" class="nav-link active">
+            <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
               <i class="fa-solid fa-gear"></i>
               <p>Site Settings</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.email-templates.index') }}" class="nav-link {{ request()->routeIs('admin.email-templates.*') ? 'active' : '' }}">
+              <i class="fas fa-envelope"></i>
+              <p>Email Templates</p>
             </a>
           </li>
           <li class="nav-item">
