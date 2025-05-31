@@ -19,7 +19,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="{{ route('dashboard.index') }}" class="nav-link {{ request()->routeIs('dashboard.index.*') ? 'active' : '' }}">
+            <a href="{{ route('dashboard.index') }}" class="nav-link {{ request()->routeIs('dashboard.*') ? 'active' : '' }}">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashboard</p>
             </a>
@@ -44,6 +44,13 @@
                 </a>
               </li>
             </ul>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-users"></i>
+              <p>Manage Users</p>
+            </a>
           </li>
           <li class="nav-item">
             <form id="frm_sidebar_logout" class="d-none" method="POST" action="{{ route('dashboard.logout') }}">

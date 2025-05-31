@@ -15,6 +15,8 @@ return [
 
     'default' => env('FILESYSTEM_DISK', 'local'),
 
+    'cloud' => env('FILESYSTEM_CLOUD', 's3'),
+
     /*
     |--------------------------------------------------------------------------
     | Filesystem Disks
@@ -29,10 +31,14 @@ return [
     */
 
     'disks' => [
+        'files' => [
+            'driver' => 'local',
+            'root' => storage_path('app/files'),
+        ],
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app/private'),
+            'root' => storage_path('app'),
             'serve' => true,
             'throw' => false,
             'report' => false,
