@@ -3,48 +3,39 @@
 @section('css')
 <!-- Bootstrap Toggle -->
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-<style>
-    .toggle.btn {
-        min-width: 5.7em;
-    }
-    .toggle-handle {
-        background-color: #fff;
-    }
-</style>
 @endsection
 
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="page-title mb-0">
-                    <i class="mdi mdi-email-outline me-1"></i> Email Templates
-                </h4>
-                <div>
-                    <a href="{{ route('admin.email-templates.create') }}" class="btn btn-primary waves-effect waves-light">
-                        <i class="mdi mdi-plus-circle me-1"></i> Add New Template
-                    </a>
+
+
+    <!-- Main content -->
+    <section class="content py-3">
+        <div class="container-fluid px-3">
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+                    <i class="mdi mdi-check-all me-2"></i>
+                    {{ is_array(session('success')) ? session('success')['message'] : session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-header mb-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h3 class="mb-0 font-weight-bold">Email Templates</h3>
+                            <a href="{{ route('admin.email-templates.create') }}" class="btn btn-primary px-4">
+                                Add New
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <i class="mdi mdi-check-all me-2"></i>
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                    @endif
+            <div class="card mb-4">
+                <div class="card-body p-4">
                     <div class="table-responsive">
                         <table class="table table-centered table-striped dt-responsive nowrap w-100 data-table" id="email-templates-datatable">
                             <thead>
@@ -188,10 +179,18 @@
                 success: function(response) {
                     console.log('Toggle response:', response);
                     if (response.success) {
-                        toastr.success(response.message);
+                        toastr.success(response.message, response.title, {
+                        closeButton: true,
+                        progressBar: true,
+                        positionClass: 'toast-top-right'
+                    });
                     } else {
                         toggle.bootstrapToggle('toggle');
-                        toastr.error(response.message || 'Failed to update status');
+                        toastr.error(response.message, response.title, {
+                        closeButton: true,
+                        progressBar: true,
+                        positionClass: 'toast-top-right'
+                    });
                     }
                 },
                 error: function(xhr) {

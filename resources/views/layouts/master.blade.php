@@ -23,20 +23,66 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <!-- Bootstrap Toggle -->
     <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+    <!-- Summernote -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
     
     <style>
     .content-wrapper {
-        margin-left: 250px; /* Width of the sidebar */
+      margin-left: 250px; /* Width of the sidebar */
     }
+    .brand-link {
+      border-bottom: 1px solid #4f5962;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Content styling */
+    .content {
+      background: #f4f6f9;
+    }
+    .page-header {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 5px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+    .page-header h3 {
+      color: #2c3e50;
+      font-size: 1.5rem;
+      letter-spacing: 0.5px;
+    }
+    .card {
+      border: none;
+      box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+    .btn-primary {
+      background: #007bff;
+      border: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      background: #0056b3;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    /* Toggle button styling */
+    .toggle.btn {
+      min-width: 5.7em;
+    }
+    .toggle-handle {
+      background-color: #fff;
+    }
+    /* DataTables styling */
     .dataTables_wrapper {
-        position: relative;
-        z-index: 0;
+      position: relative;
     }
     .dataTables_wrapper .dataTables_paginate,
     .dataTables_wrapper .dataTables_info,
     .dataTables_wrapper .dataTables_length,
     .dataTables_wrapper .dataTables_filter {
-        z-index: 0;
+      z-index: 0;
+      position: relative;
         position: relative;
     }
     .dtr-details {
@@ -69,7 +115,11 @@
 
       <!-- Preloader -->
       <div class="preloader flex-column justify-content-center align-items-center">
-        <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+        @php
+            $settings = \App\Models\SiteSetting::first();
+        @endphp
+        <img class="animation__shake" src="{{ $settings && $settings->site_logo ? asset('storage/' . $settings->site_logo) : asset('dist/img/AdminLTELogo.png') }}" 
+             alt="{{ $settings->site_name ?? 'Admin' }}" height="60" width="60">
       </div>
   
       @include('layouts.header') <!-- Header Section -->
@@ -97,18 +147,52 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
   <!-- Bootstrap Toggle -->
   <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+  <!-- Summernote -->
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
   <!-- AdminLTE App -->
   <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
   <script>
-    toastr.options = {
-      "closeButton": true,
-      "debug": false,
-      "newestOnTop": false,
-      "progressBar": true,
-      "positionClass": "toast-top-right",
-      "preventDuplicates": false,
-      "onclick": null,
-      "showDuration": "300",
+    $(document).ready(function() {
+      $('[data-toggle="tooltip"]').tooltip();
+
+      // Global toastr options
+      toastr.options = {
+        closeButton: true,
+        progressBar: true,
+        positionClass: 'toast-top-right',
+        timeOut: 3000,
+        extendedTimeOut: 1000,
+        preventDuplicates: true,
+        newestOnTop: true,
+        showEasing: 'swing',
+        hideEasing: 'linear'
+      };
+
+      // Show session messages with toastr
+      @if(session('success'))
+        toastr.success(
+          @if(is_array(session('success')))
+            '{{ session("success")["message"] }}',
+            '{{ session("success")["title"] }}'
+          @else
+            '{{ session("success") }}',
+            'Success!'
+          @endif
+        );
+      @endif
+
+      @if(session('error'))
+        toastr.error(
+          @if(is_array(session('error')))
+            '{{ session("error")["message"] }}',
+            '{{ session("error")["title"] }}'
+          @else
+            '{{ session("error") }}',
+            'Error!'
+          @endif
+        );
+      @endif
+    });
       "hideDuration": "1000",
       "timeOut": "5000",
       "extendedTimeOut": "1000",

@@ -1,8 +1,14 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">Bodia</span>
+    <a href="{{ route('dashboard.index') }}" class="brand-link text-center">
+      @php
+          $settings = \App\Models\SiteSetting::first();
+      @endphp
+      <div class="d-flex justify-content-center py-2">
+          <img src="{{ $settings && $settings->site_logo ? asset('storage/' . $settings->site_logo) : asset('dist/img/AdminLTELogo.png') }}" 
+               alt="{{ $settings->site_name ?? 'Admin' }}" 
+               style="width: auto; height: 40px;">
+      </div>
     </a>
 
     <!-- Sidebar -->

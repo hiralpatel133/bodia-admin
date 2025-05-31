@@ -38,8 +38,7 @@ class EmailTemplateController extends Controller
 
             EmailTemplate::create($validated);
 
-            return redirect()->route('admin.email-templates.index')
-                ->with('success', 'Email template created successfully.');
+            return redirect()->route('admin.email-templates.index')->with('success', 'Email template created successfully.');
         } catch (Exception $e) {
             Log::error('Error creating email template: ' . $e->getMessage());
             return back()->with('error', 'Failed to create email template.')
@@ -64,8 +63,7 @@ class EmailTemplateController extends Controller
 
             $emailTemplate->update($validated);
 
-            return redirect()->route('admin.email-templates.index')
-                ->with('success', 'Email template updated successfully.');
+            return redirect()->route('admin.email-templates.index')->with('success', 'Email template updated successfully.');
         } catch (Exception $e) {
             Log::error('Error updating email template: ' . $e->getMessage());
             return back()->with('error', 'Failed to update email template.')
@@ -77,8 +75,7 @@ class EmailTemplateController extends Controller
     {
         try {
             $emailTemplate->delete();
-            return redirect()->route('admin.email-templates.index')
-                ->with('success', 'Email template deleted successfully.');
+            return redirect()->route('admin.email-templates.index')->with('success', 'Email template deleted successfully.');
         } catch (Exception $e) {
             Log::error('Error deleting email template: ' . $e->getMessage());
             return back()->with('error', 'Failed to delete email template.');
@@ -94,14 +91,16 @@ class EmailTemplateController extends Controller
             return response()->json([
                 'success' => true,
                 'status' => $emailTemplate->status,
-                'message' => 'Status updated successfully'
+                'message' => 'Status updated successfully',
+                'title' => 'Success!'
             ]);
         } catch (Exception $e) {
             Log::error('Error toggling email template status: ' . $e->getMessage());
             
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update status: ' . $e->getMessage()
+                'message' => 'Error updating status: ' . $e->getMessage(),
+                'title' => 'Error!'
             ], 500);
         }
     }

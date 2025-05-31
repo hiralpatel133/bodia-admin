@@ -20,9 +20,16 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-      <a href="/">
-        <img src="bodia-logo.png" alt="bodia">
-      </a>
+        @php
+            $settings = \App\Models\SiteSetting::first();
+        @endphp
+        <img src="{{ $settings && $settings->site_logo ? asset('storage/' . $settings->site_logo) : asset('dist/img/AdminLTELogo.png') }}" 
+             alt="{{ $settings->site_name ?? 'Admin' }}" style="max-height: 100px">
+        @if($settings && $settings->site_name)
+            <div class="mt-2">
+                <h4>{{ $settings->site_name }}</h4>
+            </div>
+        @endif
     </div>
     <!-- /.login-logo -->
     <div class="card">

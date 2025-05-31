@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
 @section('css')
-<link href="{{ asset('assets/libs/summernote/summernote-bs4.min.css') }}" rel="stylesheet" type="text/css" />
 <style>
     .content-wrapper {
         margin-left: 250px; /* Width of the sidebar */
@@ -12,23 +11,20 @@
 @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
+
+
+    <!-- Main content -->
+    <section class="content">
         <div class="container-fluid">
-    <div class="row">
-        <div class="col-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4 class="page-title mb-0">
-                    <i class="mdi mdi-email-edit-outline me-1"></i> Edit Email Template
-                </h4>
-                <div>
-                    <a href="{{ route('admin.email-templates.index') }}" class="btn btn-secondary waves-effect">
-                        <i class="mdi mdi-arrow-left me-1"></i> Back to List
-                    </a>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-end mb-3">
+                        <a href="{{ route('admin.email-templates.index') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left mr-1"></i> Back to List
+                        </a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
     <div class="row">
         <div class="col-12">
@@ -48,31 +44,22 @@
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="name" class="form-label">Template Name <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="mdi mdi-format-title"></i></span>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" 
-                                               id="name" name="name" value="{{ old('name', $emailTemplate->name) }}" 
-                                               placeholder="Enter template name" required>
-                                        @error('name')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                    <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $emailTemplate->name) }}" required>
+                                    @error('name')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="subject" class="form-label">Email Subject <span class="text-danger">*</span></label>
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="mdi mdi-text-subject"></i></span>
-                                        <input type="text" class="form-control @error('subject') is-invalid @enderror" 
-                                               id="subject" name="subject" value="{{ old('subject', $emailTemplate->subject) }}" 
-                                               placeholder="Enter email subject" required>
-                                        @error('subject')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                    <input type="text" class="form-control @error('subject') is-invalid @enderror" id="subject" name="subject" value="{{ old('subject', $emailTemplate->subject) }}" required>
+                                    @error('subject')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
+
                         </div>
 
                         <div class="mb-3">
@@ -86,12 +73,18 @@
                         </div>
 
                         <div class="mb-3">
-                            <div class="form-check form-switch">
-                                <input type="checkbox" class="form-check-input" id="status" name="status" value="1" 
-                                       {{ old('status', $emailTemplate->status) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="status">Active Status</label>
+                            <label class="form-label d-block">Status</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="statusActive" value="1" {{ old('status', $emailTemplate->status) == 1 ? 'checked' : '' }}>
+                                <label class="form-check-label" for="statusActive">Active</label>
                             </div>
-                            <small class="text-muted">Toggle to enable/disable the template</small>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="status" id="statusInactive" value="0" {{ old('status', $emailTemplate->status) == 0 ? 'checked' : '' }}>
+                                <label class="form-check-label" for="statusInactive">Inactive</label>
+                            </div>
+                            @error('status')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="text-end mt-3">
@@ -120,7 +113,7 @@
 @endsection
 
 @push('scripts')
-<script src="{{ asset('assets/libs/summernote/summernote-bs4.min.js') }}"></script>
+<!-- Summernote initialization -->
 <script>
     $(document).ready(function() {
         $('.summernote').summernote({
