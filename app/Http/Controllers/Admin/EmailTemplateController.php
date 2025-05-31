@@ -23,7 +23,7 @@ class EmailTemplateController extends Controller
 
     public function create()
     {
-        return view('admin.email-templates.create');
+        return view('admin.email-templates.form');
     }
 
     public function store(Request $request)
@@ -48,7 +48,7 @@ class EmailTemplateController extends Controller
 
     public function edit(EmailTemplate $emailTemplate)
     {
-        return view('admin.email-templates.edit', compact('emailTemplate'));
+        return view('admin.email-templates.form', compact('emailTemplate'));
     }
 
     public function update(Request $request, EmailTemplate $emailTemplate)
