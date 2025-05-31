@@ -66,6 +66,13 @@
                                     </td>
                                     <td>{{ $template->created_at->format('M d, Y H:i') }}</td>
                                     <td>
+                                        <button type="button" class="btn btn-sm btn-primary waves-effect waves-light me-1 view-template"
+                                                data-id="{{ $template->id }}"
+                                                data-name="{{ $template->name }}"
+                                                data-subject="{{ $template->subject }}"
+                                                data-body="{{ $template->body }}">
+                                            <i class="mdi mdi-eye me-1"></i> View
+                                        </button>
                                         <a href="{{ route('admin.email-templates.edit', $template->id) }}" class="btn btn-sm btn-info waves-effect waves-light me-1">
                                             <i class="mdi mdi-square-edit-outline me-1"></i> Edit
                                         </a>
@@ -86,6 +93,40 @@
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Template Modal -->
+<div class="modal fade" id="viewTemplateModal" tabindex="-1" role="dialog" aria-labelledby="viewTemplateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="viewTemplateModalLabel">View Email Template</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="font-weight-bold">Template Name:</label>
+                        <p id="viewTemplateName" class="mb-0"></p>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="font-weight-bold">Subject:</label>
+                        <p id="viewTemplateSubject" class="mb-0"></p>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="font-weight-bold">Body:</label>
+                    <div id="viewTemplateBody" class="border rounded p-3 bg-light"></div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -203,6 +244,27 @@
                     toggle.bootstrapToggle('enable');
                 }
             });
+        });
+
+        // View Template Modal
+        $(document).on('click', '.view-template', function() {
+            var button = $(this);
+            var modal = $('#viewTemplateModal');
+            
+            // Set modal content
+            modal.find('#viewTemplateName').text(button.data('name'));
+            modal.find('#viewTemplateSubject').text(button.data('subject'));
+            modal.find('#viewTemplateBody').html(button.data('body'));
+            
+
+            // Show modal
+            modal.modal('show');
+        });
+
+        // Handle modal close
+        $('#viewTemplateModal').on('hidden.bs.modal', function () {
+            $(this).find('#viewTemplateName, #viewTemplateSubject').text('');
+            $(this).find('#viewTemplateBody').empty();
         });
 
         // Re-initialize toggles after DataTable operations
